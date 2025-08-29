@@ -1,9 +1,9 @@
 <script setup>
-import Review from './components/Review.vue'
+import WelcomeScreen from './components/steps-components/WelcomeScreen.vue'
 </script>
 
 <template>
-  <Review />
+  <WelcomeScreen />
 </template>
 
 <style scoped></style>
