@@ -1,0 +1,19 @@
+.base-button {
+  width: 12%;
+  height: 40px;
+  margin-top: 40px;
+  border-radius: 6px;
+}
+
+.primary {
+  background-color: #ffae00;
+  border: none;
+  color: #fff;
+}
+
+.secondary {
+  background-color: #fff;
+  border-color: #ffae00;
+  color: #ffae00;
+  border: 1px solid;
+}
