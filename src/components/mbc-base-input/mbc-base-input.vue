@@ -1,33 +1,58 @@
 <template>
   <div class="container-input">
-    <label class="base-label"> {{ nameLabel }} </label>
-    <input
-      class="base-input"
-      :value="modelValue"
-      @input="updateAndValidate"
-      @blur="validation(modelValue)"
-      v-bind="$attrs"
-    />
-    <span class="error-message-red" v-if="!isValid"> {{ errorMessage }} </span>
+    <label :for="titleLabel" class="base-label">
+      <input
+        :id="titleLabel"
+        :type="typeInput"
+        :value="modelValue"
+        class="base-input"
+        @input="updateModelValue"
+        @blur="showErrorMessage"
+      />
+      {{ props.titleLabel }}
+    </label>
+    <span v-if="!isValid" class="error-message"> {{ props.errorMessage }} </span>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import './styles.scss'
 
-const props = defineProps(['nameLabel', 'modelValue', 'validation', 'errorMessage'])
+const props = defineProps({
+  modelValue: {
+    type: String,
+  },
+  titleLabel: {
+    type: String,
+  },
+  validation: {
+    type: Function,
+  },
+  errorMessage: {
+    type: String,
+  },
+  typeInput: {
+    type: String,
+  },
+})
+
 const emit = defineEmits(['update:modelValue', 'valid'])
 const isValid = ref(true)
 
-function updateAndValidate(event) {
-  const data = event.target.value
-  emit('update:modelValue', data)
+function updateModelValue(event) {
+  const response = event.target.value
 
-  isValid.value = props.validation(data)
+  emit('update:modelValue', response)
+}
 
+function showErrorMessage(event) {
+  const response = event.target.value
+
+  isValid.value = props.validation(response)
   emit('valid', isValid.value)
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+@import url('./styles.scss');
+</style>
