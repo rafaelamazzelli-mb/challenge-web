@@ -1,19 +1,27 @@
 <template>
-  <div class="container-base-button">
-    <button type="submit" :class="['base-button', variantType]">
-      {{ buttonLabel }}
-    </button>
-  </div>
+  <button :class="buttonVariantType">{{ props.label }}</button>
 </template>
 
 <script setup>
+import { computed, ref } from 'vue'
+
 const props = defineProps({
-  variantType: {
+  type: {
     type: String,
   },
-  buttonLabel: {
+  label: {
     type: String,
   },
+})
+
+const enabled = ref(true)
+
+const buttonVariantType = computed(() => {
+  return {
+    button: enabled,
+    primary: props.label === 'Continuar' || 'Cadastrar' ? enabled : !enabled,
+    secondary: props.label === 'Voltar' ? enabled : !enabled,
+  }
 })
 </script>
 

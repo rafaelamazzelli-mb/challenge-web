@@ -1,14 +1,14 @@
 <template>
-  <label :for="personType" class="label-person-type">
+  <label :for="id" class="label-person-type">
     <input
-      type="radio"
       class="input-person-type"
-      :id="personType"
-      :value="valueSelectedInput"
-      :name="nameAttributeValue"
-      @change="updateModelValue"
+      type="radio"
+      :id="id"
+      :name="name"
+      :value="value"
+      @change="emit('update:modelValue', value)"
     />
-    {{ props.personType }}
+    {{ props.title }}
   </label>
 </template>
 
@@ -17,25 +17,25 @@ const props = defineProps({
   modelValue: {
     type: String,
   },
-  valueSelectedInput: {
+  value: {
     type: String,
   },
-  personType: {
+  name: {
     type: String,
   },
-  nameAttributeValue: {
+  title: {
     type: String,
   },
 })
 
 const emit = defineEmits(['update:modelValue'])
+const id = `${uniqueId()}-${props.title}`
 
-function updateModelValue(event) {
-  const responseFromRadio = event.target.value
-  emit('update:modelValue', responseFromRadio)
+function uniqueId() {
+  return Math.floor(Math.random() * 1000)
 }
 </script>
 
 <style lang="scss">
-@import url('./styles.scss');
+@use './styles.scss';
 </style>

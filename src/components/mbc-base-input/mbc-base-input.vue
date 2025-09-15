@@ -1,15 +1,15 @@
 <template>
   <div class="container-input">
-    <label :for="titleLabel" class="base-label">
+    <label :for="id" class="base-label">
       <input
-        :id="titleLabel"
+        class="base-input"
         :type="typeInput"
         :value="modelValue"
-        class="base-input"
-        @input="updateModelValue"
-        @blur="showErrorMessage"
+        :id="id"
+        @input="emit('update:modelValue', $event.target.value)"
+        @blur="onValidate"
       />
-      {{ props.titleLabel }}
+      {{ props.title }}
     </label>
     <span v-if="!isValid" class="error-message"> {{ props.errorMessage }} </span>
   </div>
@@ -22,10 +22,10 @@ const props = defineProps({
   modelValue: {
     type: String,
   },
-  titleLabel: {
+  title: {
     type: String,
   },
-  validation: {
+  validateInput: {
     type: Function,
   },
   errorMessage: {
@@ -37,22 +37,20 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'valid'])
+const id = `${uniqueId()}-${props.title}`
 const isValid = ref(true)
 
-function updateModelValue(event) {
-  const response = event.target.value
-
-  emit('update:modelValue', response)
+function onValidate(event) {
+  const value = event.target.value
+  isValid.value = props.validateInput(value)
+  emit('valid', isValid)
 }
 
-function showErrorMessage(event) {
-  const response = event.target.value
-
-  isValid.value = props.validation(response)
-  emit('valid', isValid.value)
+function uniqueId() {
+  return Math.floor(Math.random() * 1000)
 }
 </script>
 
 <style lang="scss">
-@import url('./styles.scss');
+@use './styles.scss';
 </style>
