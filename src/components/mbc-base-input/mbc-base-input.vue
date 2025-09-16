@@ -3,9 +3,9 @@
     <label :for="id" class="base-label">
       <input
         class="base-input"
-        :type="typeInput"
         :value="modelValue"
         :id="id"
+        :type="typeInput"
         @input="emit('update:modelValue', $event.target.value)"
         @blur="onValidate"
       />
@@ -22,6 +22,9 @@ const props = defineProps({
   modelValue: {
     type: String,
   },
+  typeInput: {
+    type: String,
+  },
   title: {
     type: String,
   },
@@ -31,23 +34,18 @@ const props = defineProps({
   errorMessage: {
     type: String,
   },
-  typeInput: {
+  id: {
     type: String,
   },
 })
 
 const emit = defineEmits(['update:modelValue', 'valid'])
-const id = `${uniqueId()}-${props.title}`
 const isValid = ref(true)
 
 function onValidate(event) {
   const value = event.target.value
   isValid.value = props.validateInput(value)
   emit('valid', isValid)
-}
-
-function uniqueId() {
-  return Math.floor(Math.random() * 1000)
 }
 </script>
 

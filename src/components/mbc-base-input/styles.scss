@@ -1,24 +1,23 @@
 .container-input {
-  display: flex;
-  flex-direction: column;
-
   .base-label {
     display: flex;
     flex-direction: column-reverse;
-    padding-top: 2rem;
-    gap: 10px;
+    padding-top: 1rem;
+    gap: 8px;
   }
 
   .base-input {
     padding: 8px;
-    border: 1.5px solid #000;
-    border-radius: 6px;
+    border: 1px solid #000;
+    border-radius: 8px;
     outline: none;
-    height: 20px;
+    height: 24px;
   }
 
   .error-message {
-    margin-top: 10px;
+    display: block;
+    margin-top: 8px;
+    width: 100%;
     color: #ff0000;
   }
 }

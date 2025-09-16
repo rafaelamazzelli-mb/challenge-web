@@ -26,14 +26,12 @@ const props = defineProps({
   title: {
     type: String,
   },
+  id: {
+    type: String,
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])
-const id = `${uniqueId()}-${props.title}`
-
-function uniqueId() {
-  return Math.floor(Math.random() * 1000)
-}
 </script>
 
 <style lang="scss">
