@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="props.variant">{{ props.label }}</button>
+  <button class="button" :type="typeButton" :class="props.variant">{{ props.label }}</button>
 </template>
 
 <script setup>
@@ -13,9 +13,12 @@ const props = defineProps({
       return ['primary', 'secondary'].includes(value)
     },
   },
+  typeButton: {
+    type: String,
+  },
 })
 </script>
 
 <style lang="scss">
-@use './styles.scss';
+@use './mbc-base-button.scss';
 </style>

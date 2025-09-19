@@ -1,0 +1,11 @@
+@import '/src/styles/main.scss';
+
+.container-radio {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 16px 8px 0 0;
+
+  .input-person-type {
+    margin: 0 4px 0 0;
+  }
+}

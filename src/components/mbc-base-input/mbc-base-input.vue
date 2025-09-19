@@ -1,16 +1,14 @@
 <template>
   <div class="container-input">
-    <label :for="id" class="base-label">
-      <input
-        class="base-input"
-        :value="modelValue"
-        :id="id"
-        :type="typeInput"
-        @input="emit('update:modelValue', $event.target.value)"
-        @blur="onValidate"
-      />
-      {{ props.title }}
-    </label>
+    <label :for="id" class="base-label"> {{ props.title }} </label>
+    <input
+      class="base-input"
+      :value="modelValue"
+      :id="id"
+      :type="typeInput"
+      @input="emit('update:modelValue', $event.target.value)"
+      @blur="onValidate"
+    />
     <span v-if="!isValid" class="error-message"> {{ props.errorMessage }} </span>
   </div>
 </template>
@@ -44,11 +42,13 @@ const isValid = ref(true)
 
 function onValidate(event) {
   const value = event.target.value
-  isValid.value = props.validateInput(value)
+  if (props.validateInput) {
+    isValid.value = props.validateInput(value)
+  }
   emit('valid', isValid)
 }
 </script>
 
 <style lang="scss">
-@use './styles.scss';
+@use './mbc-base-input.scss';
 </style>

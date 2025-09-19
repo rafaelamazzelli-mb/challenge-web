@@ -1,5 +1,5 @@
 <template>
-  <label :for="id" class="label-person-type">
+  <div class="container-radio">
     <input
       class="input-person-type"
       type="radio"
@@ -8,8 +8,8 @@
       :value="value"
       @change="emit('update:modelValue', value)"
     />
-    {{ props.title }}
-  </label>
+    <label :for="id" class="label-person-type"> {{ props.title }} </label>
+  </div>
 </template>
 
 <script setup>
@@ -35,5 +35,5 @@ const emit = defineEmits(['update:modelValue'])
 </script>
 
 <style lang="scss">
-@use './styles.scss';
+@use './mbc-base-radio-input.scss';
 </style>
