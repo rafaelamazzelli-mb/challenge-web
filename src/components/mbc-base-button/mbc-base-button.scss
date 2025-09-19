@@ -1,0 +1,21 @@
+@import '/src/styles/main.scss';
+
+.button {
+  width: $default-width;
+  height: 40px;
+  border-radius: $default-border-radius;
+  font-size: 16px;
+
+  &.primary {
+    background-color: $primary-and-secondary-color;
+    border: none;
+    color: #fff;
+  }
+
+  &.secondary {
+    background-color: #fff;
+    border-color: $primary-and-secondary-color;
+    color: $primary-and-secondary-color;
+    border: 2px solid;
+  }
+}

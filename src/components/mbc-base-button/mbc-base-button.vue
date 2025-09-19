@@ -1,11 +1,24 @@
-<script setup>
-const props = defineProps(['variant', 'typeButton'])
+<template>
+  <button class="button" :type="typeButton" :class="props.variant">{{ props.label }}</button>
+</template>
 
-import './styles.scss'
+<script setup>
+const props = defineProps({
+  label: {
+    type: String,
+  },
+  variant: {
+    type: String,
+    validator(value) {
+      return ['primary', 'secondary'].includes(value)
+    },
+  },
+  typeButton: {
+    type: String,
+  },
+})
 </script>
 
-<template>
-  <div class="base-button-container">
-    <button :class="['base-button', variant]">{{ typeButton }}</button>
-  </div>
-</template>
+<style lang="scss">
+@use './mbc-base-button.scss';
+</style>
