@@ -1,4 +1,4 @@
-export function validateMinimunAgeBrazil(date, minAge) {
+export function validateMinimunAgeBrazil(date) {
   const formatDate = date.split('/')
   const currentDate = new Date()
   const yearBirth = new Date(formatDate).getFullYear()
