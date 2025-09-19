@@ -1,0 +1,10 @@
+@import '/src/styles/main.scss';
+
+.fourth-step-container {
+  width: $default-width;
+
+  .review-info-title {
+    margin: $default-margin-for-titles;
+    font-weight: $font-weigth-for-titles;
+  }
+}

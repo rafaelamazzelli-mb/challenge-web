@@ -1,0 +1,10 @@
+@import '/src/styles/main.scss';
+
+.first-step-container {
+  width: $default-width;
+
+  .welcome-title {
+    margin: $default-margin-for-titles;
+    font-weight: $font-weigth-for-titles;
+  }
+}
