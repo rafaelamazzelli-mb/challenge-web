@@ -1,4 +1,4 @@
-export function validateBrazilPhoneNumber(phoneNumber) {
+export function validateBrazilianPhoneNumber(phoneNumber) {
   phoneNumber = phoneNumber.replace(/\D/g, '')
 
   const array = []
