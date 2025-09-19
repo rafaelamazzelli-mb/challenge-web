@@ -29,8 +29,9 @@
       v-model="localData.date"
       :title="localData.typePerson === 'pessoa física' ? 'Data de nascimento' : 'Data de abertura'"
       id="input-date-birth-open"
-      type-input="text"
+      type-input="text-date"
       error-message="Insira uma data válida"
+      :validate-input="validateLegalAge"
       @valid="isValueValid = $event"
     />
     <mbc-base-input
@@ -51,7 +52,7 @@ import { validateStringLength } from '@/helpers/string-helper'
 import { validateValidCpf } from '@/helpers/cpf-helper'
 import { validatePhoneNumber } from '@/helpers/phone-number-helper'
 import { validateValidCnpj } from '@/helpers/cnpj-helper'
-
+import { validateLegalAge } from '@/helpers/date-helper'
 import MbcBaseInput from '@/components/mbc-base-input/mbc-base-input.vue'
 
 const props = defineProps({
