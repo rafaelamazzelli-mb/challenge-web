@@ -8,7 +8,6 @@
       type="text"
       error-message="Insira um e-mail válido"
       :validate-input="validateEmail"
-      @valid="isEmailValid = $event"
     />
     <mbc-base-radio-input
       v-model="localData.typePerson"
@@ -28,7 +27,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { validateEmail } from '@/helpers/email-helper'
 import MbcBaseRadioInput from '@/components/mbc-base-radio-input/mbc-base-radio-input.vue'
 import MbcBaseInput from '@/components/mbc-base-input/mbc-base-input.vue'
@@ -39,7 +38,6 @@ const props = defineProps({
   },
 })
 
-const isEmailValid = ref(false)
 const emit = defineEmits(['update:formData'])
 const localData = computed({
   get: () => props.formData,

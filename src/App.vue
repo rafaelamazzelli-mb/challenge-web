@@ -1,13 +1,48 @@
-<script setup>
-import { ref } from 'vue'
-import MbcWelcome from './components/pages/welcome/mbc-welcome.vue'
-import MbcNaturalLegalPerson from './components/pages/natural-person-or-legal-entity/mbc-natural-legal-person.vue'
-import MbcAccessPassword from './components/pages/access-password/mbc-access-password.vue'
-import MbcReviewInformation from './components/pages/review-information/mbc-review-information.vue'
-import MbcBaseButton from './components/mbc-base-button/mbc-base-button.vue'
+<template>
+  <div class="app-container">
+    <form class="form-container">
+      <h1 class="step-title">Etapa {{ stepsTitle[currentStep] }} de 4</h1>
+      <component :is="steps[currentStep]" :form-data="formData" />
+      <mbc-footer
+        :current-step="currentStep"
+        :form-data="formData"
+        :is-disable="isNextStepButtonDisabled"
+        @update:current-step="(step) => (currentStep = step)"
+      />
+    </form>
+  </div>
+</template>
 
-const currentStep = ref(1)
-const totalSteps = 4
+<script setup>
+import { ref, defineAsyncComponent, computed } from 'vue'
+import MbcFooter from '@/components/mbc-footer/mbc-footer.vue'
+
+const steps = {
+  welcome: defineAsyncComponent(() => import('./components/pages/welcome/mbc-welcome.vue')),
+  naturalPerson: defineAsyncComponent(
+    () => import('./components/pages/natural-person/mbc-natural-person.vue'),
+  ),
+  legalEntity: defineAsyncComponent(
+    () => import('./components/pages/legal-entity/mbc-legal-entity.vue'),
+  ),
+  password: defineAsyncComponent(
+    () => import('./components/pages/access-password/mbc-access-password.vue'),
+  ),
+  review: defineAsyncComponent(
+    () => import('./components/pages/review-information/mbc-review-information.vue'),
+  ),
+}
+
+const currentStep = ref('welcome')
+
+const stepsTitle = {
+  welcome: 1,
+  naturalPerson: 2,
+  legalPerson: 2,
+  password: 3,
+  review: 4,
+}
+
 const formData = ref({
   email: '',
   name: '',
@@ -18,77 +53,34 @@ const formData = ref({
   typePerson: '',
 })
 
-function handleNextStep(event) {
-  event.preventDefault()
-  console.log(currentStep.value)
-  if (currentStep.value === 1 && (!formData.value.email || !formData.value.typePerson)) {
-    return
-  } else if (
-    currentStep.value === 2 &&
-    (!formData.value.name ||
-      !formData.value.number ||
-      !formData.value.date ||
-      !formData.value.phoneNumber)
-  ) {
-    return
-  } else if (currentStep.value === 3 && !formData.value.password) {
-    return
-  } else {
-    currentStep.value++
+// const testeFormData = Object.values(formData)
+
+// function teste() {
+//   console.log(formData.value)
+//   console.log(currentStep.value)
+// }
+
+const isNextStepButtonDisabled = computed(() => {
+  const { email, name, number, date, phoneNumber, password, typePerson } = formData.value
+  if (currentStep.value === 'welcome' && (!email || !typePerson)) {
+    return true
   }
-}
+  if (currentStep.value === 'naturalPerson' && (!name || !number || !date || !phoneNumber)) {
+    return true
+  }
+  if (currentStep.value === 'legalEntity' && (!name || !number || !date || !phoneNumber)) {
+    return true
+  }
+  if (currentStep.value === 'password' && !password) {
+    return true
+  }
+})
+
+console.log('uva3', isNextStepButtonDisabled.value)
 </script>
-<template>
-  <div class="app-container">
-    <form class="form-container" action="services/">
-      <h3 v-if="currentStep === 1" class="step-title">
-        Etapa <span class="orange-number">1</span> de 4
-      </h3>
-      <mbc-welcome v-show="currentStep === 1" :form-data="formData" />
-
-      <h3 v-if="currentStep === 2" class="step-title">
-        Etapa <span class="orange-number">2</span> de 4
-      </h3>
-      <mbc-natural-legal-person v-if="currentStep === 2" :form-data="formData" />
-
-      <h3 v-if="currentStep === 3" class="step-title">
-        Etapa <span class="orange-number">3</span> de 4
-      </h3>
-      <mbc-access-password v-show="currentStep === 3" :form-data="formData" />
-
-      <h3 v-if="currentStep === 4" class="step-title">
-        Etapa <span class="orange-number">4</span> de 4
-      </h3>
-      <mbc-review-information v-show="currentStep === 4" :form-data="formData" />
-
-      <div class="step-button">
-        <mbc-base-button
-          v-if="currentStep > 1"
-          variant="secondary"
-          type-button="button"
-          @click="currentStep--"
-          label="Voltar"
-        />
-        <mbc-base-button
-          v-if="currentStep === totalSteps"
-          variant="primary"
-          type-button="submit"
-          label="Cadastrar"
-        />
-        <mbc-base-button
-          v-if="currentStep !== totalSteps"
-          variant="primary"
-          type-button="button"
-          @click="handleNextStep"
-          label="Continuar"
-        />
-      </div>
-    </form>
-  </div>
-</template>
 
 <style lang="scss">
-@import '/src/styles/main.scss';
+@use '/src/styles/variables.scss' as vars;
 
 .app-container {
   display: flex;
@@ -107,12 +99,6 @@ function handleNextStep(event) {
 }
 
 .orange-number {
-  color: $primary-and-secondary-color;
-}
-
-.step-button {
-  display: flex;
-  margin-top: 16px;
-  gap: 16px;
+  color: vars.$primary-and-secondary-color;
 }
 </style>

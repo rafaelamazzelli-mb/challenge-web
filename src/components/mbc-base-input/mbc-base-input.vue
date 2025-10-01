@@ -6,7 +6,8 @@
       :value="modelValue"
       :id="id"
       :type="typeInput"
-      @input="emit('update:modelValue', $event.target.value)"
+      :maxlength="maxlength"
+      @input="onInput"
       @blur="onValidate"
     />
     <span v-if="!isValid" class="error-message"> {{ props.errorMessage }} </span>
@@ -35,10 +36,24 @@ const props = defineProps({
   id: {
     type: String,
   },
+  mask: {
+    type: Function,
+  },
+  maxlength: {
+    type: String,
+  },
 })
 
 const emit = defineEmits(['update:modelValue', 'valid'])
 const isValid = ref(true)
+
+function onInput(event) {
+  let value = event.target.value
+  if (props.mask) {
+    value = props.mask(value)
+  }
+  emit('update:modelValue', value)
+}
 
 function onValidate(event) {
   const value = event.target.value

@@ -1,16 +1,16 @@
-@import '/src/styles/main.scss';
+@use '/src/styles/variables.scss' as vars;
 
 .container-input {
-  width: $default-width;
+  width: vars.$default-width;
   margin-top: 16px;
 
   .base-input {
-    width: $default-width;
+    width: vars.$default-width;
     box-sizing: border-box;
     margin-top: 8px;
     padding: 8px;
     border: 1px solid #000;
-    border-radius: $default-border-radius;
+    border-radius: vars.$default-border-radius;
     outline: none;
     height: 40px;
   }
@@ -28,6 +28,6 @@
     display: block;
     margin-top: 8px;
     margin-bottom: 8px;
-    color: $error-text-color;
+    color: vars.$error-text-color;
   }
 }

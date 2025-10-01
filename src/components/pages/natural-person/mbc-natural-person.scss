@@ -1,9 +1,19 @@
 @use '/src/styles/variables.scss' as vars;
 
-.third-step-container {
+.second-step-container {
   width: vars.$default-width;
-  .password-access-title {
+
+  .type-person-title {
     margin: vars.$default-margin-for-titles;
     font-weight: vars.$font-weigth-for-titles;
+  }
+
+  .base-button {
+    width: vars.$default-width;
+  }
+
+  .button-options {
+    display: flex;
+    gap: 16px;
   }
 }

@@ -9,19 +9,19 @@
     />
     <mbc-base-input
       v-model="localData.name"
-      :title="localData.typePerson === 'pessoa física' ? 'Nome' : 'Razão social'"
+      :title="changeTitle()"
       id="input-name"
       type-input="text"
     />
     <mbc-base-input
       v-model="localData.number"
-      :title="localData.typePerson === 'pessoa física' ? 'CPF' : 'CNPJ'"
+      :title="changeCnpjOrCpf()"
       id="input-document-number"
       type-input="text"
     />
     <mbc-base-input
       v-model="localData.date"
-      :title="localData.typePerson === 'pessoa física' ? 'Data de nascimento' : 'Data de abertura'"
+      :title="changeDate()"
       id="input-date"
       type-input="text"
     />
@@ -29,7 +29,7 @@
       v-model="localData.phoneNumber"
       title="Telefone"
       id="input-phone-number-review"
-      type-input="number"
+      type-input="text"
     />
     <mbc-base-input
       v-model="localData.password"
@@ -55,6 +55,18 @@ const localData = computed({
   get: () => props.formData,
   set: (value) => emit('update:formData', value),
 })
+
+function changeTitle() {
+  return localData.typePerson === 'pessoa física' ? 'Nome' : 'Razão social'
+}
+
+function changeCnpjOrCpf() {
+  return localData.typePerson === 'pessoa física' ? 'CPF' : 'CNPJ'
+}
+
+function changeDate() {
+  return localData.typePerson === 'pessoa física' ? 'Data de nascimento' : 'Data de abertura'
+}
 </script>
 
 <style lang="scss">

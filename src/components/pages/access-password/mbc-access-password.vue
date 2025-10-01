@@ -5,16 +5,18 @@
       v-model="localData.password"
       type-input="password"
       title="Sua senha"
+      maxlength="12"
       id="input-access-password"
       error-message="Insira uma senha válida"
-      :validate-input="(inputValue) => validatePasswordLength(inputValue, 8, 12)"
+      :validate-input="(inputValue) => validateRulesAndLength(inputValue, 8, 12)"
+      @valid="isValid = $event"
     />
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { validatePasswordLength } from '@/helpers/password-helper'
+import { computed, ref } from 'vue'
+import { validateRulesAndLength } from '@/helpers/password-helper'
 import MbcBaseInput from '@/components/mbc-base-input/mbc-base-input.vue'
 
 const props = defineProps({
