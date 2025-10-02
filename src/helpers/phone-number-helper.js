@@ -9,7 +9,7 @@ export function validateBrazilianPhoneNumber(phoneNumber) {
     }
   }
 
-  const ddd = Number(phoneNumber.slice(0, 2))
+  const ddd = phoneNumber.slice(0, 2)
 
-  return phoneNumber.length === 11 && phoneNumber[2] === '9' && array.includes(ddd)
+  return phoneNumber.length === 11 && phoneNumber[2] === '9' && array.includes(Number(ddd))
 }
