@@ -1,8 +1,8 @@
 <template>
-  <div v-if="localData.typePerson === 'pessoa jurídica'" class="second-step-container">
+  <div v-if="formData.typePerson === 'pessoa jurídica'" class="second-step-container">
     <h1 class="type-person-title">Pessoa Jurídica</h1>
     <mbc-base-input
-      v-model="localData.name"
+      v-model="formData.name"
       title="Razão social"
       id="input-name-legal-entity"
       maxlength="40"
@@ -11,7 +11,7 @@
       :validate-input="(inputValue) => validateStringLength(inputValue, 4, 40)"
     />
     <mbc-base-input
-      v-model="localData.number"
+      v-model="formData.number"
       title="CNPJ"
       id="input-document-legal-entity"
       maxlength="17"
@@ -21,7 +21,7 @@
       :mask="cnpjMask"
     />
     <mbc-base-input
-      v-model="localData.date"
+      v-model="formData.date"
       title="Data de abertura"
       id="input-open-date"
       maxlength="10"
@@ -31,7 +31,7 @@
       :mask="dateMask"
     />
     <mbc-base-input
-      v-model="localData.phoneNumber"
+      v-model="formData.number"
       title="Telefone"
       id="input-phone-number-"
       maxlength="14"
@@ -44,7 +44,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { validateStringLength } from '@/helpers/string-helper'
 import { validateBrazilianPhoneNumber } from '@/helpers/phone-number-helper'
 import { validateValidCnpj } from '@/helpers/cnpj-helper'
@@ -61,10 +60,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:formData'])
-const localData = computed({
-  get: () => props.formData,
-  set: (value) => emit('update:formData', value),
-})
 </script>
 
 <style lang="scss">

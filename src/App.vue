@@ -2,11 +2,15 @@
   <div class="app-container">
     <form class="form-container">
       <h1 class="step-title">Etapa {{ stepsTitle[currentStep] }} de 4</h1>
-      <component :is="steps[currentStep]" :form-data="formData" />
-      <mbc-footer
-        :current-step="currentStep"
+      <component
+        :is="steps[currentStep]"
         :form-data="formData"
+        @update:formData="(valueInput) => (formData.value = valueInput)"
+      />
+      <mbc-footer
         :is-disable="isNextStepButtonDisabled"
+        :current-step="currentStep"
+        :type-person="formData.typePerson"
         @update:current-step="(step) => (currentStep = step)"
       />
     </form>
@@ -53,13 +57,6 @@ const formData = ref({
   typePerson: '',
 })
 
-// const testeFormData = Object.values(formData)
-
-// function teste() {
-//   console.log(formData.value)
-//   console.log(currentStep.value)
-// }
-
 const isNextStepButtonDisabled = computed(() => {
   const { email, name, number, date, phoneNumber, password, typePerson } = formData.value
   if (currentStep.value === 'welcome' && (!email || !typePerson)) {
@@ -76,7 +73,26 @@ const isNextStepButtonDisabled = computed(() => {
   }
 })
 
-console.log('uva3', isNextStepButtonDisabled.value)
+async function dataFromApi(event) {
+  event.preventDefault()
+  try {
+    const response = await fetch('http://localhost:3000/v1/post/registration', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' }, // informa o tipo de conteúdo que receberá como resposta
+      body: JSON.stringify(props.formData), // converte um valor js em uma string JSON
+    })
+
+    const data = await response.json()
+
+    if (response.status !== 201) {
+      return alert(data.error)
+    } else {
+      alert(data.message)
+    }
+  } catch (error) {
+    console.error('Erro!', error)
+  }
+}
 </script>
 
 <style lang="scss">

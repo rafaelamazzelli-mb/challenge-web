@@ -2,37 +2,37 @@
   <div class="fourth-step-container">
     <h1 class="review-info-title">Revise as suas informações</h1>
     <mbc-base-input
-      v-model="localData.email"
+      v-model="formData.email"
       title="Endereço de e-mail"
       id="input-email-address"
       type-input="text"
     />
     <mbc-base-input
-      v-model="localData.name"
+      v-model="formData.name"
       :title="changeTitle()"
       id="input-name"
       type-input="text"
     />
     <mbc-base-input
-      v-model="localData.number"
+      v-model="formData.number"
       :title="changeCnpjOrCpf()"
       id="input-document-number"
       type-input="text"
     />
     <mbc-base-input
-      v-model="localData.date"
+      v-model="formData.date"
       :title="changeDate()"
       id="input-date"
       type-input="text"
     />
     <mbc-base-input
-      v-model="localData.phoneNumber"
+      v-model="formData.phoneNumber"
       title="Telefone"
       id="input-phone-number-review"
       type-input="text"
     />
     <mbc-base-input
-      v-model="localData.password"
+      v-model="formData.password"
       title="Sua senha"
       id="input-password"
       type-input="password"
@@ -41,7 +41,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import MbcBaseInput from '@/components/mbc-base-input/mbc-base-input.vue'
 
 const props = defineProps({
@@ -51,10 +50,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:formData'])
-const localData = computed({
-  get: () => props.formData,
-  set: (value) => emit('update:formData', value),
-})
 
 function changeTitle() {
   return localData.typePerson === 'pessoa física' ? 'Nome' : 'Razão social'

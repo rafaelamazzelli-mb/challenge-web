@@ -2,7 +2,7 @@
   <div class="first-step-container">
     <h1 class="welcome-title">Seja bem vindo(a)</h1>
     <mbc-base-input
-      v-model="localData.email"
+      v-model="formData.email"
       title="Endereço de e-mail"
       id="input-welcome-email-address"
       type="text"
@@ -10,14 +10,14 @@
       :validate-input="validateEmail"
     />
     <mbc-base-radio-input
-      v-model="localData.typePerson"
+      v-model="formData.typePerson"
       name="typePerson"
       id="input-pessoa-fisica"
       value="pessoa física"
       title="Pessoa física"
     />
     <mbc-base-radio-input
-      v-model="localData.typePerson"
+      v-model="formData.typePerson"
       name="typePerson"
       id="input-pessoa-juridica"
       value="pessoa jurídica"
@@ -27,7 +27,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { validateEmail } from '@/helpers/email-helper'
 import MbcBaseRadioInput from '@/components/mbc-base-radio-input/mbc-base-radio-input.vue'
 import MbcBaseInput from '@/components/mbc-base-input/mbc-base-input.vue'
@@ -39,10 +38,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:formData'])
-const localData = computed({
-  get: () => props.formData,
-  set: (value) => emit('update:formData', value),
-})
 </script>
 
 <style lang="scss">
