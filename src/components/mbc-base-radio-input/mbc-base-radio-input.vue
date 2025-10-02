@@ -3,6 +3,7 @@
     <input
       class="input-person-type"
       type="radio"
+      :checked="checked"
       :id="id"
       :name="name"
       :value="value"
@@ -28,6 +29,9 @@ const props = defineProps({
   },
   id: {
     type: String,
+  },
+  checked: {
+    type: Boolean,
   },
 })
 
