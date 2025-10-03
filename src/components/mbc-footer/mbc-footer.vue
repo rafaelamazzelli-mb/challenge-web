@@ -1,84 +1,50 @@
 <template>
   <div class="step-button">
     <mbc-base-button
-      v-if="props.currentStep !== 'welcome'"
+      v-if="props.currentStep > 1"
       variant="secondary"
       type-button="button"
       label="Voltar"
-      @click="goPrevStep"
+      @click="prevStep"
     />
     <mbc-base-button
-      v-if="props.currentStep === 'review'"
       variant="primary"
-      type-button="submit"
-      label="Cadastrar"
-    />
-    <mbc-base-button
-      v-if="props.currentStep !== 'review'"
-      variant="primary"
-      type-button="button"
-      label="Continuar"
-      :disabled="isDisable"
-      @click="goToStep"
+      :type-button="typeButton"
+      :label="textLabel"
+      :disabled="buttonDisabled"
+      @click.once="nextStep"
     />
   </div>
 </template>
 
 <script setup>
-import { defineEmits } from 'vue'
+import { computed, defineEmits, ref } from 'vue'
 import MbcBaseButton from '../mbc-base-button/mbc-base-button.vue'
 
 const props = defineProps({
-  currentStep: String,
-  typePerson: String,
-  isDisable: {
+  currentStep: Number,
+  totalSteps: Number,
+  buttonDisabled: {
     type: Boolean,
   },
 })
 
+const currentStep = ref(props.currentStep)
+
 const emit = defineEmits(['update:currentStep'])
-const steps = {
-  welcome: {
-    handlers: {
-      next: () => emit('update:currentStep', 'naturalPerson'),
-    },
-    actions: ['Continuar'],
-  },
-  naturalPerson: {
-    handlers: {
-      prev: () => emit('update:currentStep', 'welcome'),
-      next: () => emit('update:currentStep', 'password'),
-    },
-    actions: ['Voltar']['Continuar'],
-  },
-  legalEntity: {
-    handlers: {
-      prev: () => emit('update:currentStep', 'welcome'),
-      next: () => emit('update:currentStep', 'password'),
-    },
-    actions: ['Voltar']['Continuar'],
-  },
-  password: {
-    handlers: {
-      prev: () => emit('update:currentStep', 'naturalPerson'),
-      next: () => emit('update:currentStep', 'review'),
-    },
-    actions: ['Voltar']['Continuar'],
-  },
-  review: {
-    handlers: {
-      prev: () => emit('update:currentStep', 'password'),
-    },
-    actions: ['Voltar']['Cadastrar'],
-  },
+
+const typeButton = computed(() => (props.totalSteps === props.currentStep ? 'submit' : 'button'))
+const textLabel = computed(() =>
+  props.totalSteps === props.currentStep ? 'Cadastrar' : 'Continuar',
+)
+
+function prevStep() {
+  emit('update:currentStep', currentStep.value--)
 }
 
-function goToStep() {
-  steps[props.currentStep].handlers.next()
-}
-
-function goPrevStep() {
-  steps[props.currentStep].handlers.prev()
+function nextStep() {
+  currentStep.value++
+  emit('update:currentStep', currentStep.value)
 }
 </script>
 
