@@ -1,6 +1,5 @@
 <template>
-  <div v-if="formData.typePerson === 'pessoa física'" class="second-step-container">
-    <h1 class="type-person-title">Pessoa Física</h1>
+  <div v-if="formData.typePerson === 'pessoa-fisica'" class="second-step-container">
     <mbc-base-input
       v-model="formData.name"
       title="Nome"
@@ -11,7 +10,7 @@
       :validate-input="(inputValue) => validateStringLength(inputValue, 4, 40)"
     />
     <mbc-base-input
-      v-model="formData.number"
+      v-model="formData.identificationNumber"
       title="CPF"
       id="input-document-natural-person"
       maxlength="14"

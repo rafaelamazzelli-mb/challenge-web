@@ -1,7 +1,7 @@
 <template>
   <div class="step-button">
     <mbc-base-button
-      v-if="props.currentStep > 1"
+      v-if="props.currentStep > 0"
       variant="secondary"
       type-button="button"
       label="Voltar"
@@ -12,7 +12,7 @@
       :type-button="typeButton"
       :label="textLabel"
       :disabled="buttonDisabled"
-      @click.once="nextStep"
+      @click="nextStep"
     />
   </div>
 </template>
@@ -39,7 +39,8 @@ const textLabel = computed(() =>
 )
 
 function prevStep() {
-  emit('update:currentStep', currentStep.value--)
+  currentStep.value--
+  emit('update:currentStep', currentStep.value)
 }
 
 function nextStep() {

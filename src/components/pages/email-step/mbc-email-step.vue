@@ -1,6 +1,5 @@
 <template>
   <div class="first-step-container">
-    <h1 class="welcome-title">Seja bem vindo(a)</h1>
     <mbc-base-input
       v-model="formData.email"
       title="Endereço de e-mail"
@@ -10,6 +9,7 @@
       :validate-input="validateEmail"
     />
     <mbc-base-radio-input
+      v-if="props.showRadioInput === true"
       v-for="item in typePerson"
       v-model="formData.typePerson"
       name="typePerson"
@@ -29,6 +29,9 @@ import MbcBaseInput from '@/components/mbc-base-input/mbc-base-input.vue'
 const props = defineProps({
   formData: {
     type: Object,
+  },
+  showRadioInput: {
+    type: Boolean,
   },
 })
 

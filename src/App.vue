@@ -1,10 +1,12 @@
 <template>
   <div class="app-container">
     <form class="form-container">
-      <h1 class="step-title">Etapa {{ steps[currentStep].order }} de 4</h1>
+      <h1 class="step-title">Etapa {{ steps[currentStep].order + 1 }} de 4</h1>
+      <h2 class="form-title">{{ steps[currentStep].title }}</h2>
       <component
         :is="steps[currentStep].component"
         :form-data="formData"
+        :show-radio-input="true"
         @update:formData="(valueInput) => (formData.value = valueInput)"
       />
       <mbc-footer
@@ -24,17 +26,11 @@ import MbcFooter from '@/components/mbc-footer/mbc-footer.vue'
 const formData = ref({
   email: '',
   name: '',
-  number: '',
+  identificationNumber: '',
   date: '',
   phoneNumber: '',
   password: '',
   typePerson: '',
-})
-
-const typePersonComponent = computed(() => {
-  return formData.value.typePerson === 'pessoa-fisica'
-    ? defineAsyncComponent(() => import('./components/pages/natural-person/mbc-natural-person.vue'))
-    : defineAsyncComponent(() => import('./components/pages/legal-entity/mbc-legal-entity.vue'))
 })
 
 const steps = computed(() => {
@@ -44,11 +40,20 @@ const steps = computed(() => {
         () => import('./components/pages/email-step/mbc-email-step.vue'),
       ),
       order: 0,
+      title: 'Seja bem vindo(a)',
     },
 
     typePerson: {
-      component: typePersonComponent,
+      component:
+        formData.value.typePerson === 'pessoa-fisica'
+          ? defineAsyncComponent(
+              () => import('./components/pages/natural-person/mbc-natural-person.vue'),
+            )
+          : defineAsyncComponent(
+              () => import('./components/pages/legal-entity/mbc-legal-entity.vue'),
+            ),
       order: 1,
+      title: formData.value.typePerson === 'pessoa-fisica' ? 'Pessoa Física' : 'Pessoa Jurídica',
     },
 
     password: {
@@ -56,12 +61,14 @@ const steps = computed(() => {
         () => import('./components/pages/access-password/mbc-access-password.vue'),
       ),
       order: 2,
+      title: 'Senha de acesso',
     },
     review: {
       component: defineAsyncComponent(
         () => import('./components/pages/review-information/mbc-review-information.vue'),
       ),
       order: 3,
+      title: 'Revise as suas informações',
     },
   }
 })
@@ -118,33 +125,6 @@ async function dataFromApi(event) {
     console.error('Erro!', error)
   }
 }
-
-// const frutas = {
-//   banana: {
-//     cor: 'amarela',
-//     calorias: 89,
-//   },
-//   maca: {
-//     cor: 'vermelha',
-//     calorias: 52,
-//   },
-//   laranja: {
-//     cor: 'laranja',
-//     calorias: 47,
-//   },
-// }
-
-// const calorias = 47
-
-// function testeFrutas() {
-//   for (let i = 0; Object.keys(frutas).length > i; i++) {
-//     const fruta = Object.keys(frutas)[i]
-
-//     if (frutas[fruta].calorias === calorias) {
-//       return fruta
-//     }
-//   }
-// }
 </script>
 
 <style lang="scss">

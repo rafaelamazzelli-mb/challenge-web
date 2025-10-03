@@ -1,6 +1,5 @@
 <template>
-  <div v-if="formData.typePerson === 'pessoa jurídica'" class="second-step-container">
-    <h1 class="type-person-title">Pessoa Jurídica</h1>
+  <div v-if="formData.typePerson === 'pessoa-juridica'" class="second-step-container">
     <mbc-base-input
       v-model="formData.name"
       title="Razão social"
@@ -11,7 +10,7 @@
       :validate-input="(inputValue) => validateStringLength(inputValue, 4, 40)"
     />
     <mbc-base-input
-      v-model="formData.number"
+      v-model="formData.identificationNumber"
       title="CNPJ"
       id="input-document-legal-entity"
       maxlength="17"
@@ -31,7 +30,7 @@
       :mask="dateMask"
     />
     <mbc-base-input
-      v-model="formData.number"
+      v-model="formData.phoneNumber"
       title="Telefone"
       id="input-phone-number-"
       maxlength="14"
