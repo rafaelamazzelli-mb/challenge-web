@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :type="typeButton" :class="props.variant">{{ props.label }}</button>
+  <button class="button" :type="props.typeButton" :class="props.variant">{{ props.label }}</button>
 </template>
 
 <script setup>

@@ -1,7 +1,9 @@
 <template>
   <div class="app-container">
     <form class="form-container">
-      <h1 class="step-title">Etapa {{ steps[currentStep].order + 1 }} de 4</h1>
+      <h1 class="step-title">
+        Etapa <span class="orange-number">{{ steps[currentStep].order + 1 }}</span> de 4
+      </h1>
       <h2 class="form-title">{{ steps[currentStep].title }}</h2>
       <component
         :is="steps[currentStep].component"
@@ -13,7 +15,8 @@
         :button-disabled="isNextStepButtonDisabled"
         :current-step="steps[currentStep].order"
         :total-steps="totalSteps"
-        @update:current-step="(step) => teste(step)"
+        @update:current-step="(step) => updateCurrentStepValue(step)"
+        :form-data="formData"
       />
     </form>
   </div>
@@ -79,7 +82,7 @@ const totalSteps = computed(() => {
 
 const currentStep = ref('email')
 
-function teste(stepNumber) {
+function updateCurrentStepValue(stepNumber) {
   for (let step = 0; totalSteps.value > step; step++) {
     const stepName = Object.keys(steps.value)[step]
 
@@ -104,27 +107,6 @@ const isNextStepButtonDisabled = computed(() => {
     return true
   }
 })
-
-async function dataFromApi(event) {
-  event.preventDefault()
-  try {
-    const response = await fetch('http://localhost:3000/v1/post/registration', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(props.formData),
-    })
-
-    const data = await response.json()
-
-    if (response.status !== 201) {
-      return alert(data.error)
-    } else {
-      alert(data.message)
-    }
-  } catch (error) {
-    console.error('Erro!', error)
-  }
-}
 </script>
 
 <style lang="scss">

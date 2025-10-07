@@ -23,18 +23,6 @@ const typePerson =
     : defineAsyncComponent(() => import('@/components/pages/legal-entity/mbc-legal-entity.vue'))
 
 const emit = defineEmits(['update:formData'])
-
-// function changeTitle() {
-//   return props.formData.typePerson === 'pessoa-fisica' ? 'Nome' : 'Razão social'
-// }
-
-// function changeCnpjOrCpf() {
-//   return props.formData.typePerson === 'pessoa-fisica' ? 'CPF' : 'CNPJ'
-// }
-
-// function changeDate() {
-//   return props.formData.typePerson === 'pessoa-fisica' ? 'Data de nascimento' : 'Data de abertura'
-// }
 </script>
 
 <style lang="scss">

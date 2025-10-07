@@ -1,12 +1,12 @@
-import express from 'express' // importação do módulo express
+import express from 'express'
 import cors from 'cors'
 import path from 'path'
 
-const app = express() // cria a API
-const PORT = 3000 // porta em que o servidor roda
+const app = express()
+const PORT = 3000
 
-app.use(cors()) // habilitar solicitações entre sites pra chamadas fetch entre origens diferentes
-app.use(express.json()) // dados são no formato JSON
+app.use(cors())
+app.use(express.json())
 
 app.get('/', (req, res) => {
   res.redirect('/v1/registration')
@@ -19,8 +19,8 @@ app.get('/v1/registration', (req, res) => {
 })
 
 app.post('/v1/post/registration', (req, res) => {
-  const { email, name, number, date, phoneNumber, password } = req.body // dados do formulário
-  if (!email || !name || !number || !date || !phoneNumber || !password) {
+  const { email, name, identificationNumber, date, phoneNumber, password } = req.body
+  if (!email || !name || !identificationNumber || !date || !phoneNumber || !password) {
     {
       res.status(400).json({
         error: 'O servidor não pode encontrar o recurso solicitado',
@@ -34,4 +34,4 @@ app.post('/v1/post/registration', (req, res) => {
   }
 })
 
-app.listen(PORT, () => console.log('servidor ativo')) // indica que o servidor está rodando na porta 3000
+app.listen(PORT, () => console.log('servidor ativo'))

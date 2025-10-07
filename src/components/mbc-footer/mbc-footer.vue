@@ -18,8 +18,9 @@
 </template>
 
 <script setup>
-import { computed, defineEmits, ref } from 'vue'
+import { computed, ref } from 'vue'
 import MbcBaseButton from '../mbc-base-button/mbc-base-button.vue'
+import dataFromApi from '@/services/api-data'
 
 const props = defineProps({
   currentStep: Number,
@@ -27,25 +28,31 @@ const props = defineProps({
   buttonDisabled: {
     type: Boolean,
   },
+  formData: Object,
 })
 
 const currentStep = ref(props.currentStep)
 
 const emit = defineEmits(['update:currentStep'])
 
-const typeButton = computed(() => (props.totalSteps === props.currentStep ? 'submit' : 'button'))
-const textLabel = computed(() =>
-  props.totalSteps === props.currentStep ? 'Cadastrar' : 'Continuar',
-)
+const currentStepIsLastOne = computed(() => props.totalSteps === currentStep.value + 1)
+const typeButton = computed(() => (currentStepIsLastOne.value ? 'submit' : 'button'))
+const textLabel = computed(() => (currentStepIsLastOne.value ? 'Cadastrar' : 'Continuar'))
 
 function prevStep() {
   currentStep.value--
   emit('update:currentStep', currentStep.value)
 }
 
-function nextStep() {
-  currentStep.value++
-  emit('update:currentStep', currentStep.value)
+function nextStep(e) {
+  e.preventDefault()
+
+  if (currentStepIsLastOne.value) {
+    return dataFromApi(props.formData)
+  } else {
+    currentStep.value++
+    return emit('update:currentStep', currentStep.value)
+  }
 }
 </script>
 
