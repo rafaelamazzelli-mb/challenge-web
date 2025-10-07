@@ -1,47 +1,15 @@
 <template>
   <div class="fourth-step-container">
-    <h1 class="review-info-title">Revise as suas informações</h1>
-    <mbc-base-input
-      v-model="formData.email"
-      title="Endereço de e-mail"
-      id="input-email-address"
-      type-input="text"
-    />
-    <mbc-base-input
-      v-model="formData.name"
-      :title="changeTitle()"
-      id="input-name"
-      type-input="text"
-    />
-    <mbc-base-input
-      v-model="formData.number"
-      :title="changeCnpjOrCpf()"
-      id="input-document-number"
-      type-input="text"
-    />
-    <mbc-base-input
-      v-model="formData.date"
-      :title="changeDate()"
-      id="input-date"
-      type-input="text"
-    />
-    <mbc-base-input
-      v-model="formData.phoneNumber"
-      title="Telefone"
-      id="input-phone-number-review"
-      type-input="text"
-    />
-    <mbc-base-input
-      v-model="formData.password"
-      title="Sua senha"
-      id="input-password"
-      type-input="password"
-    />
+    <mbc-email-step :form-data="props.formData" />
+    <component :is="typePerson" :form-data="props.formData" />
+    <mbc-access-password :form-data="props.formData" />
   </div>
 </template>
 
 <script setup>
-import MbcBaseInput from '@/components/mbc-base-input/mbc-base-input.vue'
+import { defineAsyncComponent } from 'vue'
+import MbcEmailStep from '../email-step/mbc-email-step.vue'
+import MbcAccessPassword from '../access-password/mbc-access-password.vue'
 
 const props = defineProps({
   formData: {
@@ -49,19 +17,12 @@ const props = defineProps({
   },
 })
 
+const typePerson =
+  props.formData.typePerson === 'pessoa-fisica'
+    ? defineAsyncComponent(() => import('@/components/pages/natural-person/mbc-natural-person.vue'))
+    : defineAsyncComponent(() => import('@/components/pages/legal-entity/mbc-legal-entity.vue'))
+
 const emit = defineEmits(['update:formData'])
-
-function changeTitle() {
-  return localData.typePerson === 'pessoa física' ? 'Nome' : 'Razão social'
-}
-
-function changeCnpjOrCpf() {
-  return localData.typePerson === 'pessoa física' ? 'CPF' : 'CNPJ'
-}
-
-function changeDate() {
-  return localData.typePerson === 'pessoa física' ? 'Data de nascimento' : 'Data de abertura'
-}
 </script>
 
 <style lang="scss">

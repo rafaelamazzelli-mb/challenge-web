@@ -1,17 +1,22 @@
 <template>
   <div class="app-container">
     <form class="form-container">
-      <h1 class="step-title">Etapa {{ stepsTitle[currentStep] }} de 4</h1>
+      <h1 class="step-title">
+        Etapa <span class="orange-number">{{ steps[currentStep].order + 1 }}</span> de 4
+      </h1>
+      <h2 class="form-title">{{ steps[currentStep].title }}</h2>
       <component
-        :is="steps[currentStep]"
+        :is="steps[currentStep].component"
         :form-data="formData"
+        :show-radio-input="true"
         @update:formData="(valueInput) => (formData.value = valueInput)"
       />
       <mbc-footer
-        :is-disable="isNextStepButtonDisabled"
-        :current-step="currentStep"
-        :type-person="formData.typePerson"
-        @update:current-step="(step) => (currentStep = step)"
+        :button-disabled="isNextStepButtonDisabled"
+        :current-step="steps[currentStep].order"
+        :total-steps="totalSteps"
+        @update:current-step="(step) => updateCurrentStepValue(step)"
+        :form-data="formData"
       />
     </form>
   </div>
@@ -21,45 +26,75 @@
 import { ref, defineAsyncComponent, computed } from 'vue'
 import MbcFooter from '@/components/mbc-footer/mbc-footer.vue'
 
-const steps = {
-  welcome: defineAsyncComponent(() => import('./components/pages/welcome/mbc-welcome.vue')),
-  naturalPerson: defineAsyncComponent(
-    () => import('./components/pages/natural-person/mbc-natural-person.vue'),
-  ),
-  legalEntity: defineAsyncComponent(
-    () => import('./components/pages/legal-entity/mbc-legal-entity.vue'),
-  ),
-  password: defineAsyncComponent(
-    () => import('./components/pages/access-password/mbc-access-password.vue'),
-  ),
-  review: defineAsyncComponent(
-    () => import('./components/pages/review-information/mbc-review-information.vue'),
-  ),
-}
-
-const currentStep = ref('welcome')
-
-const stepsTitle = {
-  welcome: 1,
-  naturalPerson: 2,
-  legalPerson: 2,
-  password: 3,
-  review: 4,
-}
-
 const formData = ref({
   email: '',
   name: '',
-  number: '',
+  identificationNumber: '',
   date: '',
   phoneNumber: '',
   password: '',
   typePerson: '',
 })
 
+const steps = computed(() => {
+  return {
+    email: {
+      component: defineAsyncComponent(
+        () => import('./components/pages/email-step/mbc-email-step.vue'),
+      ),
+      order: 0,
+      title: 'Seja bem vindo(a)',
+    },
+
+    typePerson: {
+      component:
+        formData.value.typePerson === 'pessoa-fisica'
+          ? defineAsyncComponent(
+              () => import('./components/pages/natural-person/mbc-natural-person.vue'),
+            )
+          : defineAsyncComponent(
+              () => import('./components/pages/legal-entity/mbc-legal-entity.vue'),
+            ),
+      order: 1,
+      title: formData.value.typePerson === 'pessoa-fisica' ? 'Pessoa Física' : 'Pessoa Jurídica',
+    },
+
+    password: {
+      component: defineAsyncComponent(
+        () => import('./components/pages/access-password/mbc-access-password.vue'),
+      ),
+      order: 2,
+      title: 'Senha de acesso',
+    },
+    review: {
+      component: defineAsyncComponent(
+        () => import('./components/pages/review-information/mbc-review-information.vue'),
+      ),
+      order: 3,
+      title: 'Revise as suas informações',
+    },
+  }
+})
+
+const totalSteps = computed(() => {
+  return Object.keys(steps.value).length
+})
+
+const currentStep = ref('email')
+
+function updateCurrentStepValue(stepNumber) {
+  for (let step = 0; totalSteps.value > step; step++) {
+    const stepName = Object.keys(steps.value)[step]
+
+    if (steps.value[stepName].order === stepNumber) {
+      currentStep.value = stepName
+    }
+  }
+}
+
 const isNextStepButtonDisabled = computed(() => {
   const { email, name, number, date, phoneNumber, password, typePerson } = formData.value
-  if (currentStep.value === 'welcome' && (!email || !typePerson)) {
+  if (currentStep.value === 'email' && (!email || !typePerson)) {
     return true
   }
   if (currentStep.value === 'naturalPerson' && (!name || !number || !date || !phoneNumber)) {
@@ -72,27 +107,6 @@ const isNextStepButtonDisabled = computed(() => {
     return true
   }
 })
-
-async function dataFromApi(event) {
-  event.preventDefault()
-  try {
-    const response = await fetch('http://localhost:3000/v1/post/registration', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' }, // informa o tipo de conteúdo que receberá como resposta
-      body: JSON.stringify(props.formData), // converte um valor js em uma string JSON
-    })
-
-    const data = await response.json()
-
-    if (response.status !== 201) {
-      return alert(data.error)
-    } else {
-      alert(data.message)
-    }
-  } catch (error) {
-    console.error('Erro!', error)
-  }
-}
 </script>
 
 <style lang="scss">

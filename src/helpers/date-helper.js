@@ -1,14 +1,17 @@
 export function validateMinimunAgeBrazil(date) {
-  const formatDate = date.split('/')
+  const inputedDate = new Date(date.split('/'))
   const currentDate = new Date()
-  const yearBirth = new Date(formatDate).getFullYear()
-  const monthBirth = new Date(formatDate).getMonth()
-  const dayBirth = new Date(formatDate).getDate()
-  const differenceAge = currentDate.getFullYear() - yearBirth
 
-  return (
-    differenceAge >= 18 &&
-    currentDate.getMonth() + 1 >= monthBirth &&
-    currentDate.getDate() >= dayBirth
-  )
+  const yearBirth = inputedDate.getFullYear()
+  const monthBirth = inputedDate.getMonth()
+  const dayBirth = inputedDate.getDate()
+  const age = currentDate.getFullYear() - yearBirth
+
+  const mounthDifference = currentDate.getMonth() - monthBirth
+
+  if (mounthDifference < 0 || (mounthDifference === 0 && currentDate.getDate() < dayBirth)) {
+    age--
+  }
+
+  return age >= 18
 }

@@ -1,6 +1,5 @@
 <template>
   <div class="third-step-container">
-    <h1 class="password-access-title">Senha de acesso</h1>
     <mbc-base-input
       v-model="formData.password"
       type-input="password"
