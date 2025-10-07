@@ -1,21 +1,21 @@
-@import '/src/styles/main.scss';
+@use '/src/styles/variables.scss' as vars;
 
 .button {
-  width: $default-width;
+  width: vars.$default-width;
   height: 40px;
-  border-radius: $default-border-radius;
+  border-radius: vars.$default-border-radius;
   font-size: 16px;
 
   &.primary {
-    background-color: $primary-and-secondary-color;
+    background-color: vars.$primary-and-secondary-color;
     border: none;
     color: #fff;
   }
 
   &.secondary {
     background-color: #fff;
-    border-color: $primary-and-secondary-color;
-    color: $primary-and-secondary-color;
+    border-color: vars.$primary-and-secondary-color;
+    color: vars.$primary-and-secondary-color;
     border: 2px solid;
   }
 }

@@ -1,0 +1,10 @@
+@use '/src/styles/variables.scss' as vars;
+
+.fourth-step-container {
+  width: vars.$default-width;
+
+  .review-info-title {
+    margin: vars.$default-margin-for-titles;
+    font-weight: vars.$font-weigth-for-titles;
+  }
+}
